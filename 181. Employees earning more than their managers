@@ -1,0 +1,5 @@
+SELECT employee1.name AS EmployeeName
+FROM Employee AS Employee1
+JOIN Employee AS Employee2
+ON Employee1.ManagerID = Employee2.Id
+WHERE (Employee1.ManagerId IS NOT NULL ) AND Employee1.Salary > Employee2.Salary
