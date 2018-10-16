@@ -1,0 +1,17 @@
+My:
+SELECT DISTINCT Person1.Email
+FROM Person AS Person1, Person as Person2
+WHERE Person1.Email = Person2.Email;
+
+SELECT DISTINCT Person1.Email
+FROM Person AS Person1
+Join Person AS Person2
+ON Person1.Email = Person2.Email;
+
+Better solution:
+Should think of COUNT() when trying to get dulicates or unique visitor.
+
+SELECT Email
+FROM Person
+GROUP BY Email
+Having COUNT(Email)>1;
