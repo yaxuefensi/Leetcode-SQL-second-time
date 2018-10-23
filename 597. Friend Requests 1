@@ -1,0 +1,38 @@
+1.
+First quickly reviewing the question. raise 2 questions
+1) what's the time frame of this request_date, any limit on this timeline?
+2) a sender may send more than 1 request to one receiver; and a accepter may accept the request more than 1 time.  should this
+be 
+
+
+SELECT
+ROUND(
+  IFNULL(
+  (SELECT COUNT(*) FROM (SELECT DISTINCT requester_id, accepter_id FROM request_accepted ) as A)
+   /
+  (SELECT COUNT(*) FROM (SELECT DISTINCT sender_id, send_to_id FROM friend_request) as B),
+  0)
+,2) AS accept_rate;
+
+2.
+Can you write a query to return the accept rate but for every month?
+
+SELECT month, ROUND(IFNULL(accept_ct/request_ct,0),2) AS accept_rate
+FROM
+(
+SELECT month, COUNT(*) AS request_ct
+FROM (SELECT DISTINCT sender_id, send_to_id, EXTRACT(YEAR_MONTH FROM request_date) AS month FROM friend_request)
+GROUP BY month
+) AS request
+LEFT JOIN
+(
+SELECT month, COUNT(*) AS accept_ct
+FROM (SELECT DISTINCT requester_id, accepter_id, EXTRACT(YEAR_MONTH FROM accept_date) AS month FROM request_accepted)
+GROUP BY month
+) AS accept
+ON request.month = accept.month
+
+
+
+3.
+How about the cumulative accept rate for every day?
