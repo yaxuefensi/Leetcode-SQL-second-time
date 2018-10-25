@@ -1,0 +1,30 @@
+
+MY:
+SELECT question_id AS survey_log
+FROM
+(
+SELECT question_id,
+       ROUND(IFNULL(SUM(CASE WHEN action='answer' THEN 1 ELSE 0 END)
+                       /
+                     SUM(CASE WHEN action='show' THEN 1 ELSE 0 END)),0),2) AS rate
+FROM survey_log
+GROUP BY question_id
+) AS answer_rate
+ORDER BY rate
+LIMIT 1;
+
+
+  
+  
+  Better:
+  
+  SELECT question_id AS survey_log
+  FROM
+  (
+  SELECT question_id, SUM(CASE WHEN action='answer' THEN 1 ELSE 0 END) AS answer_num,
+                     SUM(CASE WHEN action='show' THEN 1 ELSE 0 END) AS show_num
+  FROM survey_log
+  GROUP BY question_id
+  ) AS tbl
+  ORDER BY (answer_num/show_num) DESC
+  LIMIT 1;
