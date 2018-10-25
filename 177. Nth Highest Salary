@@ -1,0 +1,16 @@
+
+SELECT c.department, name AS employee,maxsal AS salary
+FROM Employee
+JOIN
+(
+SELECT id, name AS department, b.maxsal
+FROM department
+JOIN
+(
+SELECT departmentid, MAX(salary) AS maxsal
+FROM employee
+GROUP BY departmentid
+) AS b
+ON department.id = b.departmentid
+) AS c
+ON employee.id = c.
