@@ -1,0 +1,11 @@
+
+SELECT name
+FROM candidate
+WHERE id =
+(
+SELECT candidateid
+FROM vote
+GROUP BY candidateid
+ORDER BY COUNT(*) DESC
+LIMIT 1
+)
