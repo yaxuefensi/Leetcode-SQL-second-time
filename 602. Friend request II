@@ -1,0 +1,13 @@
+
+SELECT tbl.id, COUNT(*) AS num
+FROM
+(
+SELECT requester_id AS id
+FROM request_accepted
+UNION ALL
+SELECT accepter_id
+FROM request_accepted
+) AS tbl
+GROUP BY tbl.id
+ORDER BY COUNT(*) DESC
+LIMIT 1
