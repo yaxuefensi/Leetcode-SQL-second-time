@@ -1,0 +1,9 @@
+
+
+SELECT id,
+       CASE WHEN p_id IS NULL THEN 'root'
+            WHEN id NOT IN (SELECT p_id FROM tree) THEN 'leaf'
+            ELSE 'inner' END AS Type
+FROM tree
+ORDER BY id;
+            
